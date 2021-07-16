@@ -33,13 +33,6 @@ services:
       - FLASK_APP=app.manage:flask_app
     env_file: ./.env
     
-  scheduled_jobs:
-    build:
-        context: .
-        dockerfile: ./docker/scheduled_jobs/Dockerfile
-    depends_on:
-        - db
-    env_file: ./.env
     
 # override the default network
 networks:

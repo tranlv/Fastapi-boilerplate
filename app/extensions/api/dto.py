@@ -14,21 +14,6 @@ __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 class Dto(ABC):
 
-    @property
-    @abstractmethod
-    def name(self):
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
-    def api(self):
-        raise NotImplementedError()
-
-    @property
-    @abstractmethod
-    def model(self):
-        raise NotImplementedError()
-
     paginated_request_parser = reqparse.RequestParser()
     paginated_request_parser.add_argument('page', type=int, required=False, help='Page number.')
     paginated_request_parser.add_argument('per_page', type=int, required=False, help='Number of results per page.')

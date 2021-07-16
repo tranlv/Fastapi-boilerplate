@@ -35,7 +35,6 @@ class HealthCheck(Resource):
 
 def init_api():
     api = HTTPSApi(title='Hoovada APIs',
-                   swagger='2.0',
                    version='1.0',
                    description='The Hoovada APIs',
                    authorizations={
@@ -50,5 +49,5 @@ def init_api():
                    doc=False)
 
     api.add_namespace(ns_health)
-    api.add_namespace(ns_auth, '/auth')
+    api.add_namespace(ns_sample, '/sample')
     return api

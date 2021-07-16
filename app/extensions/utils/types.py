@@ -9,14 +9,6 @@ __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 class BaseType(object):
     pass
-    # NOTE: Fix error before merging to master
-    # @classmethod
-    # def is_valid(cls, value):
-    #     return value in cls.all()
-
-    # @classmethod
-    # def get_all(cls):
-    #     return cls.all()
 
 
 class UserRole(BaseType):
