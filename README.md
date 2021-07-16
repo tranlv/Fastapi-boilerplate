@@ -1,15 +1,10 @@
-# **hoovada-python-base**
+# **hoovada-python-restful-base**
 
-The base code structure for service using flask restful
+The base code structure for restful flask service
 
 
 Development instruction
 ---
-
-- Testing: [staging](https://staging.hoovada.com)
-- Production: [hoovada.com](https://hoovada.com)
-- Logging: [grafana.hoovada.com](https://grafana.hoovada.com)
-
 
 ### DB set up
 
