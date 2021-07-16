@@ -17,3 +17,5 @@ class Dto(ABC):
     paginated_request_parser = reqparse.RequestParser()
     paginated_request_parser.add_argument('page', type=int, required=False, help='Page number.')
     paginated_request_parser.add_argument('per_page', type=int, required=False, help='Number of results per page.')
+    paginated_request_parser.add_argument('from_created_date', type=int, required=False, help='Get from created_date')
+    paginated_request_parser.add_argument('to_created_date', type=int, required=False, help='Get to created_date')

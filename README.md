@@ -133,9 +133,9 @@ $ pip3 install pylint
 $ pylint <your files>
 ```
 
-- Save your package to app/requirements
+- Save your packages to app/requirements
 ```
-$ pip3 freeze > requirements.txt
+$ pip3 freeze > <path to project>/app/requirements.txt
 ```
 
 

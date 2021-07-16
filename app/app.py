@@ -7,20 +7,24 @@ from logging.config import dictConfig
 # third-party modules
 from flask import Flask, g, request, session
 from flask_cors import CORS
-from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 from sqlalchemy_utils import create_database, database_exists
+from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 # own modules
 from app import config_by_name
-from app.extensions.models import *
 from app.extensions.utils.util import get_logged_user
-from app.extensions.mail import mail
-from app.extensions.db import db
+from app.extensions.databases.db import db
+from app.extensions.databases.mgrate import migrate
+from app.extensions.observability.logging import logging
+from app.config import BaseConfig
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
 __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
+
 
 
 # Config logging output
@@ -39,6 +43,13 @@ dictConfig({
         'handlers': ['wsgi']
     }
 })
+
+
+sentry_sdk.init(
+    dsn=BaseConfig.SENTRY_DSN,
+    integrations=[FlaskIntegration()],
+    traces_sample_rate=1.0
+)
 
 
 def init_basic_app():
@@ -76,16 +87,13 @@ def init_basic_app():
 
 def init_app():
     app = init_basic_app()
-
     CORS(app)
 
     url = app.config['SQLALCHEMY_DATABASE_URI']
-
     if not database_exists(url):
         create_database(url, app.config['DB_CHARSET'])
 
-    db.init_app(app)
-
-    mail.init_app(app)
+    for extension in (db, migrate, mail, logging):
+        extension.init_app(app)
 
     return app

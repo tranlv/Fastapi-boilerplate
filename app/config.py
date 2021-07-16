@@ -32,6 +32,7 @@ class BaseConfig:
     SQLALCHEMY_ECHO = False
     DEBUG = False
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    SENTRY_DSN = environ.get('SENTRY_DSN', '')
 
     
 class DevelopmentConfig(BaseConfig):
