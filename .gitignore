@@ -904,3 +904,5 @@ app/static
 
 multiproc-tmp/*
 !multiproc-tmp/.gitkeep 
+
+.env

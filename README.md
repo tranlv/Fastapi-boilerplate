@@ -6,6 +6,8 @@ The base code structure for restful flask service
 Development instruction
 ---
 
+
+
 ### DB set up
 
 ```bash
@@ -81,6 +83,11 @@ $ docker-compose rm
 ```
 - Swagger:  http://localhost:5000/api/v1/openapi
 - adminer:  http://localhost:80, user/password/db: dev/hoovada/hoovada
+
+
+### Environment setup
+
+- Create a file .env in root path with all variable you need, please do not push to source code
 
 
 ### Code submission 
