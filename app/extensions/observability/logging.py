@@ -3,6 +3,7 @@
 
 # built-in modules
 import logging
+
 # third-party modules
 
 # own modules
@@ -11,7 +12,6 @@ __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
 __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
-
 
 
 class Logging(object):
@@ -30,9 +30,10 @@ class Logging(object):
 
 		app.logger.setLevel(logging.DEBUG)
 
-		# remove sqlalchemy loghanfler
+		# remove sqlalchemy loghanler
 		sqlalchemy_logger = logging.getLogger('sqlalchemy.engine.base.Engine')
 		for hdlr in list(sqlalchemy_logger.handlers):
 			sqlalchemy_logger.removeHandler(hdlr)
 		sqlalchemy_logger.addHandler(logging.NullHandler())
+
 

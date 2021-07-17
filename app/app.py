@@ -5,7 +5,7 @@
 from logging.config import dictConfig
 
 # third-party modules
-from flask import Flask, g, request, session
+from flask import Flask, g, request, session, Response, current_app
 from flask_cors import CORS
 from sqlalchemy_utils import create_database, database_exists
 from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
@@ -14,7 +14,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 # own modules
 from app import config_by_name
-from app.extensions.utils.util import get_logged_user
+from app.extensions.utils.util import get_logged_user, get_client_ip
 from app.extensions.databases.db import db
 from app.extensions.databases.mgrate import migrate
 from app.extensions.observability.logging import logging
@@ -24,7 +24,6 @@ __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
 __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
-
 
 
 # Config logging output
@@ -43,6 +42,28 @@ dictConfig({
         'handlers': ['wsgi']
     }
 })
+
+
+def log_request():
+    if allow_to_log(request.path):
+        client_ip = get_client_ip(request)
+        get_values = dict(request.args)
+        logger.info(f'CLIENT_IP: {client_ip}| PATH: {request.path}  | METHOD: {request.method}| ARGS: {get_values} | HEADER: {request.headers} ')
+
+
+def log_response(response: Response):
+    if allow_to_log(request.path):
+        headers = list(response.headers)
+        if int(response.status) not in [201, 200]:
+            logger.info(f'Response: | PATH: {request.path} | STATUS: {response.status} | HEADERS: {headers} | DATA: {response.get_data(as_text=True)}')
+    return response
+
+
+def allow_to_log(path):
+    for regex_pattern in current_app.config['API_LOG_INFO_LIST']:
+        if re.match(regex_pattern, path):
+            return True
+    return False
 
 
 sentry_sdk.init(
@@ -73,6 +94,9 @@ def init_basic_app():
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         db.session.remove()
+
+    self.app.before_request(log_request)
+    self.app.after_request(log_response)
 
     return app
 

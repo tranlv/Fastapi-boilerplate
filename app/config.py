@@ -15,6 +15,7 @@ __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 class BaseConfig:
     
+    API_LOG_INFO_LIST = ["/api/v1"]
     JSON_AS_ASCII = False
 
     # mysql configuration
