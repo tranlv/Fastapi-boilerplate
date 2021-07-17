@@ -6,8 +6,6 @@ The base code structure for restful flask service
 Development instruction
 ---
 
-
-
 ### DB set up
 
 ```bash
