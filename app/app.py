@@ -101,13 +101,13 @@ def init_basic_app():
     return app
 
 # Prometheus metrics exporter
-#metrics = GunicornInternalPrometheusMetrics(init_basic_app())
-#metrics.register_default(
-#    metrics.counter(
-#        'by_path_counter', 'Request count by request paths',
-#        labels={'path': lambda: request.path}
-#    )
-#)
+metrics = GunicornInternalPrometheusMetrics(init_basic_app())
+metrics.register_default(
+    metrics.counter(
+        'by_path_counter', 'Request count by request paths',
+        labels={'path': lambda: request.path}
+    )
+)
 
 def init_app():
     app = init_basic_app()

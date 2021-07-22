@@ -1,6 +1,6 @@
 # **hoovada-python-restful-base**
 
-The base code structure for restful flask service
+The base code structure for restful flask
 
 
 Development instruction
@@ -85,7 +85,7 @@ $ docker-compose rm
 
 ### Environment setup
 
-- Create a file .env in root path with all variable you need, please do not push to source code
+- Create a file .env in root path with all variable you need, please do not push .env to source code
 
 
 ### Code submission 
