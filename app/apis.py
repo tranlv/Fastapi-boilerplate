@@ -38,7 +38,7 @@ def init_api():
                    },
                    security='apikey',
                    prefix='/api/v1',
-                   doc=False)
+                   doc='/api/v1/openapi')
 
     api.add_namespace(ns_sample, '/sample')
     return api

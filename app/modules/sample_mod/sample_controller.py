@@ -7,6 +7,8 @@
 
 # own modules
 from app.extensions.api.controller import Controller
+from .datadef import EmailRegistrationSchema
+from .decorator import validate_payload
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
@@ -14,17 +16,20 @@ __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 
-class SampleController(controller):
+class SampleController(Controller):
 
-	def create(self):
-		pass
+    @validate_payload(EmailRegistrationSchema)
+    def register(self, data):
+        return data
 
-	def update(self):
-		pass
+    def create(self):
+        pass
 
-	def delete(self):
-    	pass
-	
-	def get(self):
-		pass
-        
+    def update(self):
+        pass
+
+    def delete(self):
+        pass
+
+    def get(self):
+        pass

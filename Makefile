@@ -22,3 +22,6 @@ all-live: base deploy-live
 
 login:
 	@docker login registry.gitlab.com
+
+run-local:
+	FLASK_APP=app.manage:flask_app python -m flask run

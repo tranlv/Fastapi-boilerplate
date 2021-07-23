@@ -15,7 +15,7 @@ __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 class BaseConfig:
-    
+
     load_dotenv()
 
     API_LOG_INFO_LIST = ["/api/v1"]
@@ -38,7 +38,7 @@ class BaseConfig:
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SENTRY_DSN = environ.get('SENTRY_DSN', '')
 
-    
+
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 

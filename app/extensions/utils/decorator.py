@@ -8,8 +8,10 @@ from functools import wraps
 from flask import g
 
 # own modules
-from app.extensions import messages
+
 from app.extensions.utils.response import send_error
+from . import messages
+
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
