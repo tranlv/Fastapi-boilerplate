@@ -78,8 +78,6 @@ def init_basic_app():
     Flask.get_logged_user = get_logged_user
     app = Flask(__name__, static_folder='static')
     app.config.from_object(config_by_name[app.config['ENV']])
-    app.config['SECRET_KEY'] = 'pmNFD~nJ0S4X16tq'
-    app.config['SECURITY_SALT'] = 'B_I8jLLo1K06CrCkKSz1'
 
     @app.before_request
     def before_request():
