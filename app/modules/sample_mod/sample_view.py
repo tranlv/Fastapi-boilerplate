@@ -9,9 +9,9 @@ from flask_restx import Resource, fields
 # own modules
 
 from app.extensions.utils.decorator import token_required
-from .sample_controller import SampleController
-from .sample_dto import SampleDto
-from .datadef import EmailRegistrationSchema
+from app.modules.sample_mod.sample_controller import SampleController
+from app.modules.sample_mod.sample_dto import SampleDto
+from app.modules.sample_mod.datadef import EmailRegistrationSchema
 
 
 __author__ = "hoovada.com team"

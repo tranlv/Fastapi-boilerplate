@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # own modules
-from .sample_view import api as ns_sample
+from app.modules.sample_mod.sample_view import api as ns_sample
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"

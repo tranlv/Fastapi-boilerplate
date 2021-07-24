@@ -7,8 +7,8 @@
 
 # own modules
 from app.extensions.api.controller import Controller
-from .datadef import EmailRegistrationSchema
-from .decorator import validate_payload
+from app.modules.sample_mod.datadef import EmailRegistrationSchema
+from app.extensions.utils.decorator import validate_payload
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"
