@@ -11,6 +11,16 @@ __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 
+def create_app():
+    app = init_app()
+    api = init_api()
+    api.init_app(app)
+    return app
+
+
+flask_app = create_app()
+
+
 @flask_app.route('/healthz')
 def __health():
     return 'ok'
@@ -24,12 +34,3 @@ def __ready():
 @flask_app.route('/debug-sentry')
 def trigger_error():
     division_by_zero = 1 / 0
-
-
-def create_app():
-    app = init_app()
-    api = init_api()
-    api.init_app(app)
-    return app
-
-flask_app = create_app()

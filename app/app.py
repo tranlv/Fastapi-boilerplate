@@ -3,7 +3,7 @@
 
 # built-in modules
 from logging.config import dictConfig
-
+import re
 # third-party modules
 from flask import Flask, g, request, session, Response, current_app
 from flask_cors import CORS
@@ -16,7 +16,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from app import config_by_name
 from app.extensions.utils.util import get_logged_user, get_client_ip
 from app.extensions.databases.db import db
-from app.extensions.databases.mgrate import migrate
+from app.extensions.databases.migrate import migrate
 from app.extensions.observability.logging import logging
 from app.config import BaseConfig
 
@@ -82,7 +82,7 @@ def init_basic_app():
     @app.before_request
     def before_request():
         g.current_user = app.get_logged_user(request)
-        
+
         if 'role' not in session:
             session['role'] = 'user'
 
@@ -90,15 +90,16 @@ def init_basic_app():
         g.endorsed_topic_id = None
         g.friend_belong_to_user_id = None
         g.mutual_friend_ids = []
-        
+
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         db.session.remove()
 
-    self.app.before_request(log_request)
-    self.app.after_request(log_response)
+    # app.before_request(log_request)
+    # app.after_request(log_response)
 
     return app
+
 
 # Prometheus metrics exporter
 metrics = GunicornInternalPrometheusMetrics(init_basic_app())
@@ -109,6 +110,7 @@ metrics.register_default(
     )
 )
 
+
 def init_app():
     app = init_basic_app()
     CORS(app)
@@ -117,7 +119,7 @@ def init_app():
     if not database_exists(url):
         create_database(url, app.config['DB_CHARSET'])
 
-    for extension in (db, migrate, mail, logging):
-        extension.init_app(app)
+    # for extension in (db, migrate, mail, logging):
+    #     extension.init_app(app)
 
     return app
