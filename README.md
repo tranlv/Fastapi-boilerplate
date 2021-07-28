@@ -2,6 +2,11 @@
 
 ### How to run
 
+- Create python virtual environment
+- Install dependencies
+```
+$ pip install -r app/requirements.txt
+```
 - Edit `.env` and set the equivalent variable
 - Activate environment variables
 ```
