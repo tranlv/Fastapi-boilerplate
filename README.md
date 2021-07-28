@@ -16,3 +16,8 @@ $ make prestart-db-init
 ```
 $ make run
 ```
+
+- Open browser at: `http://localhost:8000/docs`
+- Authentication
+	+ Login at `api/v1/login/access-token` with username, pass predefined in `.env`
+	+ Add header `Authorization`: `Bearer {{access_token}}` for any request
