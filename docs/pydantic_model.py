@@ -42,7 +42,8 @@ try:
         password2='zxcvbn2',
     )
 except ValidationError as e:
-    print(e.errors())
+    print(e.raw_errors)
+    # print(e.errors())
     """
     2 validation errors for UserModel
     name

@@ -1,11 +1,16 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
+from fastapi.exceptions import RequestValidationError
 from app.api.api_v1.api import api_router
 from app.core.config import settings
+from common.utils import request_validation_exception_handler
 
 app = FastAPI(
-    title=settings.PROJECT_NAME, openapi_url=f"{settings.API_V1_STR}/openapi.json"
+    title=settings.PROJECT_NAME,
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    exception_handlers={
+        RequestValidationError: request_validation_exception_handler
+    }
 )
 
 # Set all CORS enabled origins
