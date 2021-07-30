@@ -12,24 +12,6 @@ class BanTypeEnum(enum.Enum):
     PHONE_NUMBER = 2
 
 
-class SocialAccount(Base):
-    """Define the SocialAccount model"""
-
-    __tablename__ = 'social_account'
-
-    id = db.Column(db.Integer, primary_key=True)
-    provider = db.Column(db.String(30))
-    uid = db.Column(db.String(200))
-    last_login = db.Column(
-        db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
-    )
-    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
-    extra_data = db.Column(db.String(500))
-    user_id = db.Column(db.Integer, index=True)
-
-
 class User(Base):
     __tablename__ = 'user'
 
@@ -82,110 +64,28 @@ class User(Base):
     joined_collaboration = db.Column(
         db.Boolean, server_default=expression.false(), nullable=False)
 
-    question_share_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_shared_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_upvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_upvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_downvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    question_downvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
 
-    answer_share_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_shared_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_upvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_upvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_downvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_downvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    answer_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
+class SocialAccount(Base):
+    """Define the SocialAccount model"""
 
-    article_share_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_shared_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_upvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_upvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_downvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_downvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    article_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
+    __tablename__ = 'social_account'
 
-    poll_share_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_shared_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_upvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_upvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_downvote_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_downvoted_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    poll_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-
-    posts = db.relationship(
-        "Post", cascade='all,delete-orphan', lazy='dynamic')
-
-    post_share_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    post_shared_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    post_favorite_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    post_favorited_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    post_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    post_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-
-    comment_count = db.Column(db.Integer, server_default='0', nullable=False)
-    comment_favorite_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    comment_favorited_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    comment_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    comment_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-
-    followed_topics = db.relationship(
-        'Topic', secondary='topic_bookmark', lazy='dynamic')
-    user_report_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
-    user_reported_count = db.Column(
-        db.Integer, server_default='0', nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    provider = db.Column(db.String(30))
+    uid = db.Column(db.String(200))
+    last_login = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+    date_joined = db.Column(db.DateTime, default=datetime.utcnow)
+    extra_data = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        "user.id", ondelete='CASCADE'), index=True)
 
 
 class UserBan(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'user_ban'
     id = db.Column(db.Integer, primary_key=True)
     ban_by = db.Column(db.String(255))
     ban_type = db.Column(
@@ -198,4 +98,4 @@ class UserBan(Base):
     user_id = db.Column(db.Integer, db.ForeignKey(
         "user.id", ondelete='CASCADE'))
     # one-to-many relationship with table User
-    user = db.relationship('User', lazy=True)
+    user = relationship('User', lazy=True)

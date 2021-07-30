@@ -37,3 +37,14 @@ class EmailRegistrationPayload(BaseModel):
         if "password" in values and v != values["password"]:
             raise ValueError("Password do not match")
         return v
+
+
+class EmailPasswordPayload(BaseModel):
+    email: EmailStr
+    password: str
+
+    @validator('email')
+    def validate_email(cls, v):
+        if not is_valid_email(v):
+            raise ValueError('email is not valid')
+        return v
