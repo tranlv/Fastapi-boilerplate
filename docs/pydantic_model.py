@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ValidationError, validator
+from typing import Optional
 
 
 class UserModel(BaseModel):
@@ -6,6 +7,7 @@ class UserModel(BaseModel):
     username: str
     password1: str
     password2: str
+    example1: Optional[str]
 
     @validator('name')
     def name_must_contain_space(cls, v):

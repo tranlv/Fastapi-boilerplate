@@ -1,14 +1,46 @@
 from typing import Any, List
-
+from app.api import deps
 from fastapi import APIRouter, Depends, HTTPException
 from app.api.api_v1.endpoints.auth import schemas
+from app.api.api_v1.endpoints.auth import crud
+from sqlalchemy.orm import Session
+from app.models.auth import UserBan
+from common.email import send_confirmation_email
+from app.schemas import response
 
 router = APIRouter()
 
 
-@router.post("/register")
-def register(payload: schemas.EmailRegistrationPayload) -> Any:
-    return payload
+@router.post("/register", response_model=response.SuccessMessageResponse)
+def register(
+    *,
+    db: Session = Depends(deps.get_db),
+    payload: schemas.EmailRegistrationPayload,
+) -> Any:
+    user = crud.user.get_by_display_name(db, display_name=payload.display_name)
+    if user:
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this display_name already exists in the system.",
+        )
+    banned = db.query(UserBan).filter(UserBan.ban_by == payload.email).first()
+    if banned:
+        raise HTTPException(
+            status_code=400,
+            detail="The user has been banned",
+        )
+
+    # @TODO: ask why we accept duplicate email here
+    # if we send confirm email, how do people know their password?
+    user = crud.user.get_by_email(db, email=payload.email)
+    if user:
+        if user.confirmed is False:
+            send_confirmation_email(to=user.email, user=user)
+        return {"message": "success"}
+
+    user = crud.user.create(db, obj_in=payload)
+    send_confirmation_email(to=user.email, user=user)
+    return user
 
 
 @router.post("/login")
@@ -26,9 +58,7 @@ def password_reset_email() -> Any:
     pass
 
 
-@router.post(
-    "/password-reset-email-confirm"
-)
+@router.post("/password-reset-email-confirm")
 def password_reset_email_confirm() -> Any:
     pass
 

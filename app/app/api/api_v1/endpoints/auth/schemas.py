@@ -1,10 +1,16 @@
+from datetime import datetime
 from typing import Optional
 from common.validator import (
     is_valid_password,
     is_valid_display_name,
     is_valid_email
 )
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    validator,
+    root_validator
+)
 
 
 class EmailRegistrationPayload(BaseModel):
@@ -48,3 +54,25 @@ class EmailPasswordPayload(BaseModel):
         if not is_valid_email(v):
             raise ValueError('email is not valid')
         return v
+
+
+# data to passed when create user
+class CreateUserData(BaseModel):
+    email: EmailStr
+    phone_number: Optional[str]
+    password: str
+    display_name: str
+    confirmed: Optional[bool] = False
+    first_name: Optional[str]
+    last_name: Optional[str]
+    middle_name: Optional[str]
+    gender: Optional[str]
+    email_confirmed_at: Optional[datetime]
+    verification_sms_time: Optional[datetime]
+
+    @root_validator
+    def check_phone_or_email(cls, values):
+        email, phone_number = values.get('email'), values.get('phone_number')
+        if email is None and phone_number is None:
+            raise ValueError('Please provide email of phone')
+        return values
