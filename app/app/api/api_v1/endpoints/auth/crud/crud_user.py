@@ -51,7 +51,7 @@ class CRUDUser(CRUDBase[User, schemas.CreateUserData, schemas.CreateUserData]):
         user = self.get_by_email(db, email=email)
         if not user:
             return None
-        if not verify_password(password, user.password_hash):
+        if not check_password_hash(password, user.password_hash):
             return None
         return user
 

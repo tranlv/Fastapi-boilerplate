@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.models.auth import UserBan
 from common.email import send_confirmation_email
 from app.schemas import response
+from app.i18n import i18n
 
 router = APIRouter()
 
@@ -21,13 +22,13 @@ def register(
     if user:
         raise HTTPException(
             status_code=400,
-            detail="The user with this display_name already exists in the system.",
+            detail=i18n.t("validation.error.display_name_existed"),
         )
     banned = db.query(UserBan).filter(UserBan.ban_by == payload.email).first()
     if banned:
         raise HTTPException(
             status_code=400,
-            detail="The user has been banned",
+            detail=i18n.t("authentication.error.account_banned"),
         )
 
     # @TODO: ask why we accept duplicate email here
@@ -44,8 +45,34 @@ def register(
 
 
 @router.post("/login")
-def login() -> Any:
-    pass
+def login(
+    *,
+    db: Session = Depends(deps.get_db),
+    payload: schemas.EmailPasswordPayload
+) -> Any:
+    banned = db.query(UserBan).filter(UserBan.ban_by == payload.email).first()
+    if banned:
+        raise HTTPException(
+            status_code=400,
+            detail=i18n.t("authentication.error.account_banned"),
+        )
+
+    user = crud.user.authenticate(
+        db, email=payload.email, password=payload.password
+    )
+    # @TODO:
+    # record the login attempt to redis to prevent brute-force attack
+    if user is None:
+        return HTTPException(
+            status_code=401,
+            detail=i18n.t("authentication.error.incorrect_email_or_password"),
+        )
+    if user.confirmed is False:
+        send_confirmation_email(to=user.email, user=user)
+        return HTTPException(
+            status_code=401,
+            detail=i18n.t("authentication.error.account_not_existed_or_confirmed")
+        )
 
 
 @router.post("/confirm")

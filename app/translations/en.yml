@@ -15,7 +15,11 @@ validation:
     missing_field: Please provide field %{field}
     missing_policy: Policy is not accepted!
     wrong_data_format: Wrong data format!
+    display_name_existed: The given display_name is existed
 authentication:
   error:
     not_login: Pleas login to continue
     user_deactivated: Your account has been deactivated
+    incorrect_email_or_password: Email or password is incorrect!
+    account_banned: The account is banned!
+    account_not_existed_or_confirmed: The account is either not existed or not confirmed!
