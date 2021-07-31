@@ -81,6 +81,8 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
     USERS_OPEN_REGISTRATION: bool = False
+    I18N_TRANSLATION_PATH: str = "./app/translations"
+    I18N_DEFAULT_LANGUAGE: str = "en"
 
     class Config:
         case_sensitive = True

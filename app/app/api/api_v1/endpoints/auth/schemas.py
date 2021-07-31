@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Optional
+from app.i18n import i18n
 from common.validator import (
     is_valid_password,
     is_valid_display_name,
@@ -23,25 +24,27 @@ class EmailRegistrationPayload(BaseModel):
     @validator('email')
     def validate_email(cls, v):
         if not is_valid_email(v):
-            raise ValueError('email is not valid')
+            raise ValueError(i18n.t("validation.error.invalid_email"))
         return v
 
     @validator('display_name')
     def validate_display_name(cls, v):
         if not is_valid_display_name(v):
-            raise ValueError('display_name is not valid')
+            raise ValueError(i18n.t("validation.error.invalid_display_name"))
         return v
 
     @validator('password')
     def validate_password(cls, v):
         if not is_valid_password(v):
-            raise ValueError(lambda: 'password is not valid')
+            raise ValueError(i18n.t("validation.error.invalid_password"))
         return v
 
     @validator('password_confirm')
     def validate_password_confirm(cls, v, values, **kwargs):
         if "password" in values and v != values["password"]:
-            raise ValueError("Password do not match")
+            raise ValueError(
+                i18n.t("validation.error.password_confirm_not_match")
+            )
         return v
 
 
@@ -52,7 +55,7 @@ class EmailPasswordPayload(BaseModel):
     @validator('email')
     def validate_email(cls, v):
         if not is_valid_email(v):
-            raise ValueError('email is not valid')
+            raise ValueError(i18n.t("validation.error.invalid_email"))
         return v
 
 
@@ -74,5 +77,7 @@ class CreateUserData(BaseModel):
     def check_phone_or_email(cls, values):
         email, phone_number = values.get('email'), values.get('phone_number')
         if email is None and phone_number is None:
-            raise ValueError('Please provide email of phone')
+            raise ValueError(
+                i18n.t("validation.error.email_or_phone_required")
+            )
         return values
