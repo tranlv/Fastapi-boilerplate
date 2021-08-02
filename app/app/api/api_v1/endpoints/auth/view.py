@@ -1,6 +1,6 @@
 from typing import Any, List
 from app.api import deps
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from app.api.api_v1.endpoints.auth import schemas
 from app.api.api_v1.endpoints.auth import crud
 from sqlalchemy.orm import Session
@@ -8,6 +8,8 @@ from app.models.auth import UserBan
 from common.email import send_confirmation_email
 from app.schemas import response
 from app.i18n import i18n
+from common.utils import send_error, send_result
+
 
 router = APIRouter()
 
@@ -20,15 +22,14 @@ def register(
 ) -> Any:
     user = crud.user.get_by_display_name(db, display_name=payload.display_name)
     if user:
-        raise HTTPException(
-            status_code=400,
-            detail=i18n.t("validation.error.display_name_existed"),
+        return send_error(
+            code=422, message=i18n.t("validation.error.display_name_existed")
         )
+
     banned = db.query(UserBan).filter(UserBan.ban_by == payload.email).first()
     if banned:
-        raise HTTPException(
-            status_code=400,
-            detail=i18n.t("authentication.error.account_banned"),
+        return send_error(
+            code=400, message=i18n.t("authentication.error.account_banned")
         )
 
     # @TODO: ask why we accept duplicate email here
@@ -37,7 +38,7 @@ def register(
     if user:
         if user.confirmed is False:
             send_confirmation_email(to=user.email, user=user)
-        return {"message": "success"}
+        return send_result()
 
     user = crud.user.create(db, obj_in=payload)
     send_confirmation_email(to=user.email, user=user)
@@ -52,9 +53,9 @@ def login(
 ) -> Any:
     banned = db.query(UserBan).filter(UserBan.ban_by == payload.email).first()
     if banned:
-        raise HTTPException(
-            status_code=400,
-            detail=i18n.t("authentication.error.account_banned"),
+        return send_error(
+            code=400,
+            message=i18n.t("authentication.error.account_banned")
         )
 
     user = crud.user.authenticate(
@@ -63,15 +64,16 @@ def login(
     # @TODO:
     # record the login attempt to redis to prevent brute-force attack
     if user is None:
-        return HTTPException(
-            status_code=401,
-            detail=i18n.t("authentication.error.incorrect_email_or_password"),
+        return send_error(
+            code=400,
+            message=i18n.t("authentication.error.incorrect_email_or_password")
         )
+
     if user.confirmed is False:
         send_confirmation_email(to=user.email, user=user)
-        return HTTPException(
-            status_code=401,
-            detail=i18n.t("authentication.error.account_not_existed_or_confirmed")
+        return send_error(
+            code=400,
+            message=i18n.t("authentication.error.account_not_existed_or_confirmed")
         )
 
 

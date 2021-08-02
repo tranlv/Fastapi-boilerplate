@@ -3,7 +3,6 @@ from fastapi.exceptions import RequestValidationError
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 from fastapi.encoders import jsonable_encoder
-from pprint import pprint
 
 
 async def request_validation_exception_handler(
@@ -25,34 +24,31 @@ async def request_validation_exception_handler(
                     json_serialized[loc_tuple[-1]] = str(message)
             else:
                 json_serialized[loc_tuple[-1]] = str(err.exc)
-    return JSONResponse(
-        status_code=HTTP_422_UNPROCESSABLE_ENTITY,
-        content={
-            "status": False,
-            "code": HTTP_422_UNPROCESSABLE_ENTITY,
-            "message": jsonable_encoder(json_serialized),
-            "data": None
-        },
+    return send_error(
+        code=HTTP_422_UNPROCESSABLE_ENTITY,
+        message=jsonable_encoder(json_serialized)
     )
 
 
 def send_result(data=None, message='OK', code=200, status=True):
-
-    res = {
-        'status': status,
-        'code': code,
-        'message': message,
-        'data': data,
-    }
-    return res, code
+    return JSONResponse(
+        status_code=code,
+        content={
+            'status': status,
+            'code': code,
+            'message': message,
+            'data': data,
+        }
+    )
 
 
 def send_error(data=None, message='Failed', code=400, status=False):
-
-    res = {
-        'status': status,
-        'code': code,
-        'message': message,
-        'data': data,
-    }
-    return res, code
+    return JSONResponse(
+        status_code=code,
+        content={
+            'status': status,
+            'code': code,
+            'message': message,
+            'data': data,
+        }
+    )
