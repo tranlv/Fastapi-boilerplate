@@ -9,6 +9,8 @@ from werkzeug.security import (
     check_password_hash,
     generate_password_hash
 )
+from app.i18n import i18n
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -16,7 +18,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
 
 
-def create_access_token(
+def encode_auth_token(
     subject: Union[str, Any], expires_delta: timedelta = None
 ) -> str:
     if expires_delta:
@@ -25,6 +27,27 @@ def create_access_token(
         expire = datetime.utcnow() + timedelta(
             minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
-    to_encode = {"exp": expire, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
+    payload = {
+        "exp": expire,
+        'iat': datetime.utcnow(),
+        'iss': "admin@staging.com",
+        "sub": str(subject)
+    }
+    encoded_jwt = jwt.encode(payload, settings.SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def decode_auth_token(auth_token):
+    try:
+        payload = jwt.decode(
+            auth_token,
+            settings.SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+        return payload['sub'], payload['exp'], ''  # return the user_id
+
+    except jwt.ExpiredSignatureError:
+        return None, None, i18n.t('authentication.error.token_expired')
+
+    except jwt.InvalidTokenError:
+        return None, None, i18n.t('authentication.error.token_invalid')

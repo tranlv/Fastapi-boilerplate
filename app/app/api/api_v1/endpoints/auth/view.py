@@ -1,14 +1,19 @@
 from typing import Any, List
+from datetime import datetime
 from app.api import deps
 from fastapi import APIRouter, Depends
 from app.api.api_v1.endpoints.auth import schemas
 from app.api.api_v1.endpoints.auth import crud
 from sqlalchemy.orm import Session
-from app.models.auth import UserBan
+from app.models.auth import UserBan, User
 from common.email import send_confirmation_email
 from app.schemas import response
 from app.i18n import i18n
 from common.utils import send_error, send_result
+from app.core.security import (
+    encode_auth_token,
+    check_password_hash
+)
 
 
 router = APIRouter()
@@ -75,6 +80,10 @@ def login(
             code=400,
             message=i18n.t("authentication.error.account_not_existed_or_confirmed")
         )
+    user.is_deactivated = False
+    db.session.commit()
+    auth_token = encode_auth_token(use=user)
+    return send_result(data={"access_token": auth_token.decode("utf-8")})
 
 
 @router.post("/confirm")
@@ -93,8 +102,26 @@ def password_reset_email_confirm() -> Any:
 
 
 @router.post("/change-password")
-def change_password() -> Any:
-    pass
+def change_password(
+    *,
+    payload: schemas.ChangePasswordPayload,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_logged_user)
+) -> Any:
+    if not check_password_hash(
+        payload.old_password, current_user.password_hash
+    ):
+        return send_error(
+            code=401,
+            message=i18n.t("authentication.error.incorrect_email_or_password")
+        )
+    current_user = crud.user.set_password(db, current_user, payload.password)
+    # @TODO: ask why change password leading to confirm the email???
+    if current_user.confirmed is False:
+        current_user.confirmed = True
+        current_user.email_confirmed_at = datetime.now()
+    db.session.commit()
+    return send_result()
 
 
 @router.post("/social_login/google")

@@ -59,6 +59,26 @@ class EmailPasswordPayload(BaseModel):
         return v
 
 
+class ChangePasswordPayload(BaseModel):
+    old_password: str
+    password: str
+    password_confirm: str
+
+    @validator('password')
+    def validate_password(cls, v):
+        if not is_valid_password(v):
+            raise ValueError(i18n.t("validation.error.invalid_password"))
+        return v
+
+    @validator('password_confirm')
+    def validate_password_confirm(cls, v, values, **kwargs):
+        if "password" in values and v != values["password"]:
+            raise ValueError(
+                i18n.t("validation.error.password_confirm_not_match")
+            )
+        return v
+
+
 # data to passed when create user
 class CreateUserData(BaseModel):
     email: EmailStr

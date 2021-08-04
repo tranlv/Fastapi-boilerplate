@@ -23,3 +23,7 @@ authentication:
     incorrect_email_or_password: Email or password is incorrect!
     account_banned: The account is banned!
     account_not_existed_or_confirmed: The account is either not existed or not confirmed!
+    token_expired: Signature expired. Please log in again.
+    token_invalid: Invalid token. Please log in again.
+    missing_token: You must provide a valid token to continue.
+    user_not_found: User not found

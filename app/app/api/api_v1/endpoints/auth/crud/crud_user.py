@@ -61,5 +61,8 @@ class CRUDUser(CRUDBase[User, schemas.CreateUserData, schemas.CreateUserData]):
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
 
+    def set_password(self, db: Session, user, password):
+        user.password_hash = generate_password_hash(password)
+        return user
 
 user = CRUDUser(User)

@@ -23,3 +23,7 @@ authentication:
     incorrect_email_or_password: Tài khoản hoặc mật khẩu không đúng!
     account_banned: Tài khoản này đã bị cấm truy cập!
     account_not_existed_or_confirmed: Tài khoản không tồn tại hoặc chưa được xác nhận
+    token_expired: Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.
+    token_invalid: Token không hợp lệ. Vui lòng đăng nhập lại.
+    missing_token: Bạn phải cung cấp một token hợp lệ để tiếp tục
+    user_not_found: Không tìm thấy người dùng này trong hệ thống
