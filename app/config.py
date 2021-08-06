@@ -37,6 +37,8 @@ class BaseConfig:
     DEBUG = False
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SENTRY_DSN = environ.get('SENTRY_DSN', '')
+    TRANSLATION_PATH = environ.get('TRANSLATION_PATH', "./app/translations/")
+    DEFAULT_TRANSLATION_LANGUAGE = 'en'
 
 
 class DevelopmentConfig(BaseConfig):

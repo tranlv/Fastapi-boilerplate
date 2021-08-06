@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # built-in modules
+
 from logging.config import dictConfig
 import re
 # third-party modules
@@ -18,6 +19,7 @@ from app.extensions.utils.util import get_logged_user, get_client_ip
 from app.extensions.databases.db import db
 from app.extensions.databases.migrate import migrate
 from app.extensions.observability.logging import logging
+from app.extensions.i18n import configure_i18n
 from app.config import BaseConfig
 
 __author__ = "hoovada.com team"
@@ -91,13 +93,18 @@ def init_basic_app():
         g.friend_belong_to_user_id = None
         g.mutual_friend_ids = []
 
+        # language can be extends to load from user setting, eg: user.setting.locate
+        # or can be set to read default from accept-language header
+        # this is from language query parameter
+        language = request.args.get('language', BaseConfig.DEFAULT_TRANSLATION_LANGUAGE)
+        configure_i18n(BaseConfig.TRANSLATION_PATH, locate=language)
+
     @app.teardown_appcontext
     def shutdown_session(exception=None):
         db.session.remove()
 
     # app.before_request(log_request)
     # app.after_request(log_response)
-
     return app
 
 

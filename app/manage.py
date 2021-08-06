@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # own modules
-from app.apis import init_api
 from app.app import init_app
+from app.apis import init_api
+
 
 __author__ = "hoovada.com team"
 __maintainer__ = "hoovada.com team"

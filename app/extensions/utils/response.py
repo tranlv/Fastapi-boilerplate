@@ -7,6 +7,17 @@ __email__ = "admin@hoovada.com"
 __copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
 
 
+# Better solution is to override the restx JSON encoder
+def resolve_lazy_error_message(messages):
+    def _gen():
+        for key, value in messages.items():
+            if callable(value):
+                yield key, value()
+            else:
+                yield key, value
+    return dict(_gen())
+
+
 def send_result(data=None, message='OK', code=200, status=True):
 
     res = {
@@ -19,6 +30,9 @@ def send_result(data=None, message='OK', code=200, status=True):
 
 
 def send_error(data=None, message='Failed', code=400, status=False):
+
+    if isinstance(message, dict):
+        message = resolve_lazy_error_message(message)
 
     res = {
         'status': status,
