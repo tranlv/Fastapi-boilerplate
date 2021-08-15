@@ -81,8 +81,8 @@ def login(
             message=i18n.t("authentication.error.account_not_existed_or_confirmed")
         )
     user.is_deactivated = False
-    db.session.commit()
-    auth_token = encode_auth_token(use=user)
+    db.commit()
+    auth_token = encode_auth_token(subject=user.id)
     return send_result(data={"access_token": auth_token.decode("utf-8")})
 
 
