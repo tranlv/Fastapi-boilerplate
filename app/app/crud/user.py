@@ -8,7 +8,7 @@ from app.core.security import (
 )
 from app.crud.base import CRUDBase
 from app.models.auth import User
-from app.api.api_v1.endpoints.auth import schemas
+from app.schemas import user as schemas
 
 
 class CRUDUser(CRUDBase[User, schemas.CreateUserData, schemas.CreateUserData]):

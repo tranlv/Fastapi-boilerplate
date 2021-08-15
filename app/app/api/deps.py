@@ -9,7 +9,7 @@ from app import models
 from app.core.security import decode_auth_token
 from app.core.config import settings
 from app.db.session import SessionLocal
-from app.api.api_v1.endpoints.auth import crud
+from app.crud.user import user as crud_user
 from app.i18n import i18n
 
 
@@ -60,7 +60,7 @@ def get_logged_user(
     # if blacklist_token is not None:
     #     return None, 'Unauthorized'
 
-    user = crud.user.get(db, id=user_id)
+    user = crud_user.get(db, id=user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

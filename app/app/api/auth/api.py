@@ -2,8 +2,8 @@ from typing import Any, List
 from datetime import datetime
 from app.api import deps
 from fastapi import APIRouter, Depends
-from app.api.api_v1.endpoints.auth import schemas
-from app.api.api_v1.endpoints.auth import crud
+from app.schemas import user as schemas
+from app.crud import user as crud
 from sqlalchemy.orm import Session
 from app.models.auth import UserBan, User
 from common.email import send_confirmation_email
