@@ -3,40 +3,34 @@ from typing import Optional
 from app.i18n import i18n
 from common.validator import (
     is_valid_password,
-    is_valid_display_name,
     is_valid_email
 )
 from pydantic import (
     BaseModel,
     EmailStr,
-    validator,
-    root_validator
+    validator
 )
 
 
-class EmailRegistrationPayload(BaseModel):
+class UserRegistrationPayload(BaseModel):
     email: EmailStr
     password: str
     password_confirm: str
-    display_name: str
-    is_policy_accepted: bool
-
-    @validator('email')
-    def validate_email(cls, v):
-        if not is_valid_email(v):
-            raise ValueError(i18n.t("validation.error.invalid_email"))
-        return v
-
-    @validator('display_name')
-    def validate_display_name(cls, v):
-        if not is_valid_display_name(v):
-            raise ValueError(i18n.t("validation.error.invalid_display_name"))
-        return v
+    first_name: str
+    last_name: str
+    gender: str
+    birthday: datetime
 
     @validator('password')
     def validate_password(cls, v):
         if not is_valid_password(v):
             raise ValueError(i18n.t("validation.error.invalid_password"))
+        return v
+
+    @validator('gender')
+    def validate_gender(cls, v):
+        if v not in ['M', 'F', 'U', 'O']:
+            raise ValueError(i18n.t("validation.error.invalid_gender"))
         return v
 
     @validator('password_confirm')
@@ -79,25 +73,28 @@ class ChangePasswordPayload(BaseModel):
         return v
 
 
-# data to passed when create user
-class CreateUserData(BaseModel):
-    email: EmailStr
+class UpdateUserPayload(BaseModel):
+    username: Optional[str]
     phone_number: Optional[str]
-    password: str
-    display_name: str
-    confirmed: Optional[bool] = False
     first_name: Optional[str]
-    last_name: Optional[str]
     middle_name: Optional[str]
+    last_name: Optional[str]
     gender: Optional[str]
-    email_confirmed_at: Optional[datetime]
-    verification_sms_time: Optional[datetime]
+    birthday: Optional[datetime]
+    email: Optional[str]
+    avatar: Optional[str]
 
-    @root_validator
-    def check_phone_or_email(cls, values):
-        email, phone_number = values.get('email'), values.get('phone_number')
-        if email is None and phone_number is None:
-            raise ValueError(
-                i18n.t("validation.error.email_or_phone_required")
-            )
-        return values
+
+# data to passed when create user
+class CreateUserData(UpdateUserPayload):
+    last_seen: Optional[datetime]
+    joined_date: Optional[datetime]
+    confirmed: Optional[bool]
+    confirmed_at: Optional[datetime]
+
+
+class FullUser(CreateUserData):
+    id: int
+
+    class Config:
+        orm_mode = True

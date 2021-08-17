@@ -5,3 +5,4 @@
 # from app.schemas.item import ItemCreate, ItemUpdate
 
 # item = CRUDBase[Item, ItemCreate, ItemUpdate](Item)
+from .user import user

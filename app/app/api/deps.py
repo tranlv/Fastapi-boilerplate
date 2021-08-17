@@ -29,7 +29,7 @@ def get_db() -> Generator:
 def get_logged_user(
     request: Request,
     db: Session = Depends(get_db)
-) -> models.auth.User:
+) -> models.User:
     auth_token = None
     api_key = None
 
