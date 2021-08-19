@@ -1,27 +1,17 @@
-REGISTRY   		:= registry.gitlab.com/hoovada/hoovada-python-base
-REPO_NAME   	:= $$(/usr/bin/basename -s .git `git config --get remote.origin.url`)
-GIT_COMMIT 		:= $$(git rev-parse --short HEAD)
-GIT_BRANCH 		:= $$(git branch | grep \* | cut -d ' ' -f2)
-DATE 			:= $$(date +'%d%b%Y')
+CURRENT_TIMESTAMP:=`date +'%Y%m%d_%H:%M:%S'`
 
-BASE   			:= ${REGISTRY}:base-${GIT_COMMIT}-${GIT_BRANCH}-${DATE}
+prestart-test:
+	PYTHONPATH=./app python app/app/tests_pre_start.py
 
-base:
-	@docker build -t ${BASE} -f ./docker/base/Dockerfile .
-	@docker push ${BASE}
+prestart-db-init:
+	cd app && PYTHONPATH=. ./prestart.sh
 
-deploy-staging:
-	@kubectl set image deployment/base base=${BASE} -n <> --context=do-sgp1-test --record
+run:
+	PYTHONPATH=./app uvicorn app.main:app --reload
 
-all-staging: base deploy-staging
+make-migration:
+	cd app && PYTHONPATH=. alembic revision --autogenerate -m "${CURRENT_TIMESTAMP} migration"
 
-deploy-live:
-	@kubectl set image deployment/base base=${BASE} -n <> --context=do-sgp1-production --record
+migrate:
+	cd app && PYTHONPATH=. alembic upgrade head
 
-all-live: base deploy-live
-
-login:
-	@docker login registry.gitlab.com
-
-run-local:
-	FLASK_APP=app.manage:flask_app python -m flask run

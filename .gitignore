@@ -1,7 +1,14 @@
+.sandbox/
+.mypy_cache
+.coverage
+htmlcov
+__pycache__/
+*.pyc
+
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 # Byte-compiled / optimized / DLL files
-.DS_Store
+.sandbox/
 sftp-config.json
 __pycache__/
 *.py[cod]
@@ -903,7 +910,7 @@ fabric.properties
 
 app/static
 
+*.env
+
 multiproc-tmp/*
 !multiproc-tmp/.gitkeep 
-
-.env
