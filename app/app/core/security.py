@@ -12,6 +12,12 @@ from werkzeug.security import (
 from app.i18n import i18n
 
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 

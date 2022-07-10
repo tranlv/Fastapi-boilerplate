@@ -6,3 +6,9 @@
 
 # item = CRUDBase[Item, ItemCreate, ItemUpdate](Item)
 from .user import user
+
+
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""

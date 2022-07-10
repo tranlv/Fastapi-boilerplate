@@ -3,6 +3,12 @@ from typing import Any
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
 @as_declarative()
 class Base:
     id: Any

@@ -13,6 +13,13 @@ from app.crud.user import user as crud_user
 from app.i18n import i18n
 
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
+
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/login/access-token"
 )

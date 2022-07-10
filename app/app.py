@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # built-in modules
-
 from logging.config import dictConfig
 import re
+
 # third-party modules
 from flask import Flask, g, request, session, Response, current_app
 from flask_cors import CORS
@@ -18,14 +18,14 @@ from app import config_by_name
 from app.extensions.utils.util import get_logged_user, get_client_ip
 from app.extensions.databases.db import db
 from app.extensions.databases.migrate import migrate
-from app.extensions.observability.logging import logging
+from app.extensions.logging import logging
 from app.extensions.i18n import configure_i18n
 from app.config import BaseConfig
 
-__author__ = "hoovada.com team"
-__maintainer__ = "hoovada.com team"
-__email__ = "admin@hoovada.com"
-__copyright__ = "Copyright (c) 2020 - 2020 hoovada.com . All Rights Reserved."
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
 
 
 # Config logging output

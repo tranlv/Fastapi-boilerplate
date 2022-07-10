@@ -9,6 +9,13 @@ from app.db import base  # noqa: F401
 # for more details: https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
 
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
+
 def init_db(db: Session) -> None:
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create

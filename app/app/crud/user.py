@@ -11,6 +11,12 @@ from app.schemas import user as schemas
 from fastapi.encoders import jsonable_encoder
 
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
 class CRUDUser(CRUDBase[User, schemas.CreateUserData, schemas.CreateUserData]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()

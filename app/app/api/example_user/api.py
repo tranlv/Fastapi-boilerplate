@@ -15,6 +15,12 @@ from app.core.security import (
     check_password_hash
 )
 
+__author__ = ""
+__maintainer__ = ""
+__email__ = ""
+__copyright__ = ""
+
+
 router = APIRouter()
 
 

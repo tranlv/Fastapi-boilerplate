@@ -41,14 +41,14 @@ deploy-stag:
   stage: deploy
   script: 
     - >
-      DOMAIN=stag.hoovada-fastapi.com
-      TRAEFIK_TAG=stag.hoovada-fastapi.com
-      STACK_NAME=stag-hoovada-fastapi-com
+      DOMAIN=stag.fastapi.com
+      TRAEFIK_TAG=stag.fastapi.com
+      STACK_NAME=stag-fastapi-com
       TAG=stag
       sh ./scripts/deploy.sh
   environment:
     name: staging
-    url: https://stag.hoovada-fastapi.com
+    url: https://stag.fastapi.com
   only:
     - master
   tags:
@@ -59,14 +59,14 @@ deploy-prod:
   stage: deploy
   script:
     - >
-      DOMAIN=hoovada-fastapi.com
-      TRAEFIK_TAG=hoovada-fastapi.com
-      STACK_NAME=hoovada-fastapi-com
+      DOMAIN=fastapi.com
+      TRAEFIK_TAG=fastapi.com
+      STACK_NAME=fastapi-com
       TAG=prod
       sh ./scripts/deploy.sh
   environment:
     name: production
-    url: https://hoovada-fastapi.com
+    url: https://fastapi.com
   only:
     - production
   tags:
