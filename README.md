@@ -37,11 +37,6 @@ Directory Convention
 we put everything else here, i.e. interfaces, cache, databases, ORM, i18n, monitor, logging, etc.
 
 
-### `/docker`
-
-- All related docker files
-
-
 ### `/sql`
 
 - sql migration files
@@ -74,12 +69,6 @@ $ make run
 	+ Login at `api/v1/login/access-token` with username, pass predefined in `.env`
 	+ Add header `Authorization`: `Bearer {{access_token}}` for any request
 
-```bash
-$ docker build -f ./docker/app/Dockerfile .
-$ docker run <name of image> -p 5000:5000
-```
-
-- Swagger is at /api/v1/openapi
 
 ### Test and Code quality
 
@@ -115,16 +104,12 @@ We use [SemVer](http://semver.org/) for versioning. Please see CHANGELOG.md for 
 Contribution
 ---
 
-Please follow our contribution convention at [contribution instructions](https://github.com/tranlyvu/Fastapi-boilerplate
-/blob/master/CONTRIBUTING.md) and [code of conduct](https://github.com/tranlyvu/
-Fastapi-boilerplate/blob/master/CODE-OF-CONDUCT.md).
+Please follow our contribution convention at [contribution instructions](https://github.com/tranlyvu/Fastapi-boilerplate/blob/master/CONTRIBUTING.md) and [code of conduct](https://github.com/tranlyvu/Fastapi-boilerplate/blob/master/CODE-OF-CONDUCT.md).
 
 To set up development environment, simply run:
 
 ```bash
 $ pip install -r requirements.txt
 ```
-
-You can also put a [vote to get the project](https://github.com/vinta/awesome-python/pull/2104) more visible to others.
 
 If you like this project, you can buy buy me a [pizza](https://www.buymeacoffee.com/tranlv) to motivate me improve on the project.
