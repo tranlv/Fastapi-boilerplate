@@ -7,25 +7,11 @@ example_plural:
   many: Congrats, there are many people in your network
 validation:
   error:
-<<<<<<< HEAD
     invalid_password: Password is not valid
-=======
     email_or_phone_required: Please provide email or phone
     invalid_email: Email is not valid
     invalid_password: Password is not valid
     password_confirm_not_match: Password confirmation is not match
->>>>>>> base/fastapi
-    invalid_display_name: The display name is invalid!
-    missing_field: Please provide field %{field}
-    missing_policy: Policy is not accepted!
-    wrong_data_format: Wrong data format!
-<<<<<<< HEAD
-authentication:
-  error:
-    not_login: Pleas login to continue
-    user_deactivated: Your account has been deactivated
-=======
-    display_name_existed: The given display_name is existed
 authentication:
   error:
     not_login: Pleas login to continue
@@ -37,4 +23,3 @@ authentication:
     token_invalid: Invalid token. Please log in again.
     missing_token: You must provide a valid token to continue.
     user_not_found: User not found
->>>>>>> base/fastapi

@@ -20,7 +20,6 @@ __copyright__ = ""
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
 ALGORITHM = "HS256"
 
 
